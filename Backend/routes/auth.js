@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const { body, validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const JWT_KEY = "sameer";
 
 router.post(
   "/",
@@ -19,27 +22,26 @@ router.post(
     // res.send(req.body);
     // console.log(req.body);
 
-    //checking user's email is exist or not
-
+    //checking user's email is exist or not\
     try {
-      // console.log(user, "before");
       let user = await User.findOne({ email: req.body.email });
       console.log(user, "after");
       if (user) {
         return res.status(400).json({ error: "this email is already exist" });
       }
 
+      const salt = await bcrypt.genSalt(10);
+      let secPass = await bcrypt.hash(req.body.password, salt);
+
       //create a new user
-      User(req.body)
-        .save()
-        .then((user) => res.json(user))
-        .catch((err) => {
-          console.log(err, "THIS IS THE ERROR");
-          res.json({
-            error: "please enter a valid email",
-            message: err.message,
-          });
-        });
+      user = await User.create({
+        name: req.body.name,
+        password: secPass,
+        email: req.body.email,
+      });
+      const jwtToken = jwt.sign(req.body.email, JWT_KEY);
+
+      res.json({ jwtToken });
     } catch (error) {
       console.log(error.message);
       res.status(500).send("some error happen");
