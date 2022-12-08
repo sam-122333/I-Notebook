@@ -1,10 +1,13 @@
 const connectToMongo = require("./bd");
 const express = require("express");
 
+// connect the server to the database
 connectToMongo();
+
 const app = express();
 const port = 7000;
 app.use(express.json());
+
 //Available routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/notes", require("./routes/notes"));
