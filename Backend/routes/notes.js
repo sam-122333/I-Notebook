@@ -24,7 +24,7 @@ router.post(
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        res.status(400).json({ errors: errors.array() });
+        res.status(402).json({ errors: errors.array() });
       }
       const { title, description, tag } = req.body;
       const note = await Notes.create({
@@ -82,7 +82,7 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
 
 router.delete("/deletenotes/:id", fetchuser, async (req, res) => {
   try {
-    const { title, description, tag } = req.body;
+    // const { title, description, tag } = req.body;
     // finding the note for delete.
     let note = await Notes.findById(req.params.id);
     if (!note) {

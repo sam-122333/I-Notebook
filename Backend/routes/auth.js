@@ -64,6 +64,7 @@ router.post(
   ],
   async (req, res) => {
     const errors = validationResult(req);
+    let success = false;
     if (!errors.isEmpty()) {
       res.status(400).json({ errors: errors.array() });
     }
@@ -83,7 +84,8 @@ router.post(
       const data = { user: { id: user.id } };
       const jwtToken = jwt.sign(data, JWT_KEY);
       console.log(passwordCompare, "data");
-      res.status(200).json({ jwtToken });
+      success = true;
+      res.status(200).json({ success, jwtToken });
     } catch (error) {
       res
         .status(404)
