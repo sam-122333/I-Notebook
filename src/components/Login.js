@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 const Login = (props) => {
   const [userDetails, setUserDetails] = useState({ email: "", password: "" });
   let history = useNavigate();
-  // let history = unstable_HistoryRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch("http://localhost:7000/api/auth/login", {
@@ -21,10 +20,13 @@ const Login = (props) => {
     console.log(json);
     if (json.success) {
       localStorage.setItem("token", json.jwtToken);
-      history("/");
+      history("/home");
       props.showAlert("Congrats! you are logged in successfully", "success");
     } else {
-      props.showAlert("Login failed! please try with correct login and password", "danger");
+      props.showAlert(
+        "Login failed! please try with correct login and password",
+        "danger"
+      );
     }
   };
   const onChange = (e) => {
@@ -32,6 +34,11 @@ const Login = (props) => {
   };
   return (
     <div>
+      <div className="mb-5">
+        <h2>Login Page</h2>
+        <small>Please enter the details for logged in</small>
+      </div>
+
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">

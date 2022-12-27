@@ -24,18 +24,18 @@ const App = () => {
     <>
       <NoteState>
         <Router>
-          <Navbar />
+          <Navbar showAlert={showAlert} />
           <Alert alertMsg={alert} showAlert={showAlert} />
           <div className="container my-3">
             <Routes>
               <Route path="/" element={<Home showAlert={showAlert} />} />
               <Route path="/home" element={<Home showAlert={showAlert} />} />
               <Route path="/about" element={<About />} />
-              <Route path="/login" element={<Login showAlert={showAlert} />} />
               <Route
                 path="/signup"
                 element={<Signup showAlert={showAlert} />}
               />
+              <Route path="/login" element={<Login showAlert={showAlert} />} />
             </Routes>
           </div>
         </Router>

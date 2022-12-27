@@ -38,6 +38,10 @@ const Signup = (props) => {
   };
   return (
     <div className="container">
+      <div className="mb-5">
+        <h2>Signup Page</h2>
+        <small>Please enter the details for Signup</small>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
