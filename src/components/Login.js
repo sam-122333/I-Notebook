@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = (props) => {
   const [userDetails, setUserDetails] = useState({ email: "", password: "" });
   let history = useNavigate();
   // let history = unstable_HistoryRouter();
@@ -22,8 +22,9 @@ const Login = () => {
     if (json.success) {
       localStorage.setItem("token", json.jwtToken);
       history("/");
+      props.showAlert("Congrats! you are logged in successfully", "success");
     } else {
-      alert("Please enter the correct details");
+      props.showAlert("Login failed! please try with correct login and password", "danger");
     }
   };
   const onChange = (e) => {

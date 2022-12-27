@@ -13,14 +13,15 @@ router.post(
   [
     body("name", "please enter minimum 3 character").isLength({ min: 3 }),
     body("email", "please enter a valid email").isEmail(),
-    body("password", "please enter minimum 3 character").isLength({ min: 6 }),
+    body("password", "please enter minimum 6 character").isLength({ min: 6 }),
   ],
   async (req, res) => {
     console.log(req.header);
+    let success = false;
     const errors = validationResult(req);
     console.log(errors.isEmpty());
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
+      res.status(400).json({ success, errors: errors.array() });
     }
     // res.send(req.body);
     // console.log(req.body);
@@ -30,9 +31,11 @@ router.post(
       let user = await User.findOne({ email: req.body.email });
       console.log(user, "after");
       if (user) {
-        return res.status(400).json({ error: "this email is already exist" });
+        return res
+          .status(400)
+          .json({ success, error: "this email is already exist" });
       }
-
+      success = true;
       const salt = await bcrypt.genSalt(10);
       let secPass = await bcrypt.hash(req.body.password, salt);
 
@@ -42,7 +45,8 @@ router.post(
         password: secPass,
         email: req.body.email,
       });
-      res.json({ createuser });
+      success = true;
+      res.json({ success, createuser });
     } catch (error) {
       console.log(error.message);
       res.status(500).send("some error happen");

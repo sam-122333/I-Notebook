@@ -2,12 +2,18 @@ import NoteItems from "./NoteItems";
 import { useContext, useEffect, useRef, useState } from "react";
 import noteContext from "../context/notes/noteContext";
 import AddNote from "./AddNote";
+import { useNavigate } from "react-router-dom";
 
-const Notes = () => {
+const Notes = (props) => {
+  const history = useNavigate();
   const context = useContext(noteContext);
   const { notes, getNotes, editNote } = context;
   useEffect(() => {
-    getNotes(); // eslint-disable-next-line
+    if (localStorage.getItem("token")) {
+      getNotes();
+    } else {
+      history("/login");
+    } // eslint-disable-next-line
   }, []);
   const ref = useRef(null);
   const refClose = useRef(null);
@@ -33,13 +39,14 @@ const Notes = () => {
     e.preventDefault();
     editNote(note.id, note.etitle, note.edescription, note.etag);
     ref.current.click();
+    props.showAlert("Your note is updated successfully", "success");
   };
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
   };
   return (
     <>
-      <AddNote />
+      <AddNote showAlert={props.showAlert} />
       <button
         ref={ref}
         type="button"
@@ -140,6 +147,7 @@ const Notes = () => {
         {notes.map((note, index) => {
           return (
             <NoteItems
+              showAlert={props.showAlert}
               note={note}
               index={index}
               updateNote={updateNote}

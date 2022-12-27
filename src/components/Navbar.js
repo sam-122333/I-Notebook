@@ -7,7 +7,11 @@ const Navbar = () => {
     <div>
       <nav className="navbar navbar-expand-lg bg-dark">
         <div className="container-fluid">
-          <Link className="navbar-brand text-light" to="/">
+          <Link
+            style={{ marginLeft: "100px" }}
+            className="navbar-brand text-light"
+            to="/"
+          >
             Navbar
           </Link>
 
